@@ -1,6 +1,23 @@
 
 const generateBtn = document.getElementById('generate-btn');
+const themeBtn = document.getElementById('theme-btn');
 const numberElements = document.querySelectorAll('.number');
+
+// Theme toggle logic
+const currentTheme = localStorage.getItem('theme') || 'dark';
+document.documentElement.setAttribute('data-theme', currentTheme);
+updateThemeButton(currentTheme);
+
+themeBtn.addEventListener('click', () => {
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    updateThemeButton(theme);
+});
+
+function updateThemeButton(theme) {
+    themeBtn.textContent = theme === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode';
+}
 
 function generateLottoNumbers() {
     const numbers = new Set();
