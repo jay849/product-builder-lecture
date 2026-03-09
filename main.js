@@ -26,6 +26,27 @@ const resultContainer = document.getElementById('result-container');
 const menuIcon = document.getElementById('menu-icon');
 const menuName = document.getElementById('menu-name');
 const menuDesc = document.getElementById('menu-desc');
+const themeBtn = document.getElementById('theme-btn');
+
+// Theme toggle logic
+const currentTheme = localStorage.getItem('theme');
+if (currentTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+    themeBtn.textContent = '☀️';
+}
+
+themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    
+    let theme = 'light';
+    if (document.body.classList.contains('dark-mode')) {
+        theme = 'dark';
+        themeBtn.textContent = '☀️';
+    } else {
+        themeBtn.textContent = '🌓';
+    }
+    localStorage.setItem('theme', theme);
+});
 
 let isRolling = false;
 
