@@ -1,63 +1,50 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotto Number Generator</title>
+    <title>오늘 뭐 먹지? - 저녁 메뉴 추천</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <div class="theme-toggle">
-            <button id="theme-btn">🌙 Dark Mode</button>
-        </div>
-        <h1>Lotto Number Generator</h1>
-        <div class="lotto-numbers">
-            <span class="number"></span>
-            <span class="number"></span>
-            <span class="number"></span>
-            <span class="number"></span>
-            <span class="number"></span>
-            <span class="number"></span>
-        </div>
-        <button id="generate-btn">Generate Numbers</button>
+    <div class="app-container">
+        <header>
+            <h1>🍴 오늘 뭐 먹지?</h1>
+            <p>결정 장애를 위한 저녁 메뉴 추천 서비스</p>
+        </header>
+
+        <main>
+            <div id="result-container" class="result-card">
+                <div class="icon" id="menu-icon">❓</div>
+                <h2 id="menu-name">메뉴를 추천해 드릴까요?</h2>
+                <p id="menu-desc">버튼을 눌러 저녁 메뉴를 정해 보세요!</p>
+            </div>
+
+            <button id="recommend-btn">오늘의 메뉴 추천받기!</button>
+        </main>
+
+        <section class="contact-section">
+            <h3>🤝 제휴 문의</h3>
+            <form action="https://formspree.io/f/xykdowjz" method="POST" class="contact-form">
+                <div class="form-group">
+                    <label for="email">이메일 주소</label>
+                    <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">문의 내용</label>
+                    <textarea id="message" name="message" rows="4" placeholder="문의 내용을 입력해 주세요." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">문의 보내기</button>
+            </form>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 저녁 메뉴 추천기</p>
+        </footer>
     </div>
-
-    <section class="contact-section">
-        <h2>제휴 문의</h2>
-        <form action="https://formspree.io/f/xykdowjz" method="POST" class="contact-form">
-            <label>
-                Your email:
-                <input type="email" name="email" placeholder="email@example.com" required>
-            </label>
-            <label>
-                Your message:
-                <textarea name="message" rows="4" placeholder="문의 내용을 입력해주세요." required></textarea>
-            </label>
-            <button type="submit">Send</button>
-        </form>
-    </section>
-
-    <div id="disqus_thread" class="disqus-container"></div>
-    <script>
-        /**
-        *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-        *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
-        /*
-        var disqus_config = function () {
-        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-        };
-        */
-        (function() { // DON'T EDIT BELOW THIS LINE
-        var d = document, s = d.createElement('script');
-        s.src = 'https://productbuilder-ziactbiox2.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
     <script src="main.js"></script>
 </body>
