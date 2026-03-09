@@ -178,6 +178,13 @@ h2 {
     transform: translateY(-2px);
 }
 
+#comments {
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid #eee;
+    text-align: left;
+}
+
 footer {
     margin-top: 40px;
     font-size: 0.9rem;
