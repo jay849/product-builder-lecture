@@ -27,12 +27,71 @@ const menuIcon = document.getElementById('menu-icon');
 const menuName = document.getElementById('menu-name');
 const menuDesc = document.getElementById('menu-desc');
 const themeBtn = document.getElementById('theme-btn');
+const langBtn = document.getElementById('lang-btn');
+
+// Translation Dictionary
+const i18n = {
+    ko: {
+        title: "🍴 오늘 뭐 먹지?",
+        subtitle: "결정 장애를 위한 저녁 메뉴 추천 서비스",
+        initialName: "메뉴를 추천해 드릴까요?",
+        initialDesc: "버튼을 눌러 저녁 메뉴를 정해 보세요!",
+        button: "오늘의 메뉴 추천받기!",
+        rolling: "추천 중...",
+        again: "다시 추천받기!",
+        themeDark: "다크 모드",
+        themeLight: "라이트 모드",
+        lang: "English"
+    },
+    en: {
+        title: "🍴 What to Eat Today?",
+        subtitle: "Dinner recommendation for the indecisive",
+        initialName: "Ready to get a recommendation?",
+        initialDesc: "Press the button to decide your dinner!",
+        button: "Get Today's Menu!",
+        rolling: "Recommending...",
+        again: "Get Another One!",
+        themeDark: "Dark Mode",
+        themeLight: "Light Mode",
+        lang: "한국어"
+    }
+};
+
+let currentLang = localStorage.getItem('lang') || 'ko';
+
+function updateLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    
+    document.getElementById('main-title').textContent = i18n[lang].title;
+    document.getElementById('main-subtitle').textContent = i18n[lang].subtitle;
+    langBtn.textContent = i18n[lang].lang;
+    
+    // Only update result if not rolling and it's the initial state
+    if (!isRolling && menuName.textContent === i18n[lang === 'ko' ? 'en' : 'ko'].initialName) {
+        menuName.textContent = i18n[lang].initialName;
+        menuDesc.textContent = i18n[lang].initialDesc;
+    }
+    
+    if (!isRolling) {
+        recommendBtn.textContent = (recommendBtn.textContent.includes('다시') || recommendBtn.textContent.includes('Another')) 
+            ? i18n[lang].again 
+            : i18n[lang].button;
+    }
+
+    // Update theme button text
+    const isDark = document.body.classList.contains('dark-mode');
+    themeBtn.textContent = isDark ? i18n[lang].themeLight : i18n[lang].themeDark;
+}
+
+langBtn.addEventListener('click', () => {
+    updateLanguage(currentLang === 'ko' ? 'en' : 'ko');
+});
 
 // Theme toggle logic
 const currentTheme = localStorage.getItem('theme');
 if (currentTheme === 'dark') {
     document.body.classList.add('dark-mode');
-    themeBtn.textContent = '☀️';
 }
 
 themeBtn.addEventListener('click', () => {
@@ -41,12 +100,13 @@ themeBtn.addEventListener('click', () => {
     let theme = 'light';
     if (document.body.classList.contains('dark-mode')) {
         theme = 'dark';
-        themeBtn.textContent = '☀️';
-    } else {
-        themeBtn.textContent = '🌓';
     }
     localStorage.setItem('theme', theme);
+    updateLanguage(currentLang); // Refresh text
 });
+
+// Initial load
+updateLanguage(currentLang);
 
 let isRolling = false;
 
@@ -54,7 +114,7 @@ recommendBtn.addEventListener('click', () => {
     if (isRolling) return;
 
     isRolling = true;
-    recommendBtn.textContent = "추천 중...";
+    recommendBtn.textContent = i18n[currentLang].rolling;
     recommendBtn.disabled = true;
 
     let counter = 0;
@@ -64,7 +124,7 @@ recommendBtn.addEventListener('click', () => {
         
         menuIcon.textContent = tempMenu.icon;
         menuName.textContent = tempMenu.name;
-        menuDesc.textContent = "어디 보자... 무엇이 좋을까요?";
+        menuDesc.textContent = currentLang === 'ko' ? "어디 보자... 무엇이 좋을까요?" : "Let's see... What would be good?";
         
         counter++;
         if (counter > 15) {
@@ -90,7 +150,7 @@ function finishSelection() {
         resultContainer.classList.remove('pop-animation');
     }, 400);
 
-    recommendBtn.textContent = "다시 추천받기!";
+    recommendBtn.textContent = i18n[currentLang].again;
     recommendBtn.disabled = false;
     isRolling = false;
 }
