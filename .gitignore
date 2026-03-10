@@ -1,0 +1,12 @@
+# IDEs
+.vscode/
+.idx/
+
+# Firebase
+.firebase/
+firebase-debug.log*
+firebase-debug.*.log
+
+# OS files
+.DS_Store
+Thumbs.db
