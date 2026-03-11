@@ -18,9 +18,9 @@
         <div class="nav-container">
             <a href="index.html" class="nav-logo">🌟 Life Helper</a>
             <div class="nav-links">
-                <a href="index.html" class="active">메뉴 추천</a>
-                <a href="pet-classifier.html">AI 판별</a>
-                <a href="about.html">소개</a>
+                <a href="index.html" class="active">저녁 메뉴 추천</a>
+                <a href="pet-classifier.html">강아지/고양이 찾기</a>
+                <a href="about.html">서비스 소개</a>
                 <button id="theme-btn" class="theme-toggle">🌙</button>
             </div>
         </div>
@@ -29,29 +29,28 @@
     <div class="container">
         <header class="section-card">
             <h1>🍴 오늘 뭐 먹지?</h1>
-            <p>메뉴 결정을 도와드리는 스마트 추천 서비스입니다.</p>
+            <p class="subtitle">결정 장애를 위한 스마트한 저녁 메뉴 추천 서비스</p>
             
             <div id="result-container" class="result-card">
                 <div class="icon" id="menu-icon" style="font-size: 4rem; margin-bottom: 1rem;">❓</div>
                 <h2 id="menu-name">메뉴를 추천해 드릴까요?</h2>
                 <p id="menu-desc" style="margin-bottom: 0;">버튼을 누르면 오늘의 추천 메뉴가 나타납니다.</p>
             </div>
-            <button id="recommend-btn">오늘의 추천 메뉴 확인하기</button>
+            <button id="recommend-btn" class="submit-btn" style="width: 100%;">오늘의 추천 메뉴 확인하기</button>
         </header>
 
         <section class="section-card">
-            <h3>💡 이용 가이드</h3>
-            <p style="text-align: left; margin-bottom: 0;">
-                라이프 헬퍼는 엄선된 20가지 대중적인 메뉴를 기반으로 최적의 선택을 돕습니다. 
-                결과가 마음에 들지 않는다면 '다시 추천받기'를 눌러보세요.
-            </p>
-        </section>
-
-        <section class="section-card">
             <h3>🤝 제휴 및 문의</h3>
+            <p class="subtitle" style="text-align: left; margin-bottom: 1.5rem;">서비스 개선 제안이나 비즈니스 문의를 남겨주세요.</p>
             <form action="https://formspree.io/f/xykdowjz" method="POST" class="contact-form">
-                <input type="email" id="email" name="email" placeholder="이메일 주소" required>
-                <textarea id="message" name="message" rows="3" placeholder="문의 내용을 입력하세요." required></textarea>
+                <div class="form-group">
+                    <label for="email">이메일 주소</label>
+                    <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">문의 내용</label>
+                    <textarea id="message" name="message" rows="4" placeholder="문의 내용을 입력해 주세요." required></textarea>
+                </div>
                 <button type="submit" class="submit-btn">문의 보내기</button>
             </form>
         </section>
