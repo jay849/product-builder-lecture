@@ -40,7 +40,7 @@ async function loadModel() {
 // 결과 라벨 생성
 function createLabelElements() {
     labelContainer = document.getElementById("label-container");
-    labelContainer.innerHTML = ""; // 기존 내용 삭제
+    labelContainer.innerHTML = ""; 
     for (let i = 0; i < maxPredictions; i++) {
         const labelDiv = document.createElement("div");
         labelDiv.className = "prediction-bar-container";
@@ -68,7 +68,6 @@ async function startWebcam() {
         await webcam.play();
         isWebcamRunning = true;
         
-        // 화면 UI 전환
         imageContainer.style.display = 'none';
         webcamContainer.style.display = 'flex';
         webcamContainer.innerHTML = "";
@@ -95,7 +94,7 @@ function stopWebcam() {
         imageContainer.style.display = 'flex';
         uploadPreview.style.display = 'none';
         loadingMessage.style.display = 'block';
-        loadingMessage.textContent = "아래 버튼을 눌러 시작해 보세요!";
+        loadingMessage.textContent = "여기에 사진을 끌어다 놓거나 아래 버튼을 누르세요!";
         
         startBtn.style.display = 'inline-block';
         document.querySelector('.upload-wrapper').style.display = 'inline-block';
@@ -110,12 +109,10 @@ async function loop() {
     window.requestAnimationFrame(loop);
 }
 
-// 이미지 업로드 처리
-imageUpload.addEventListener('change', async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+// 이미지 파일 처리 로직 (재사용 가능)
+async function handleImageFile(file) {
+    if (!file || !file.type.startsWith('image/')) return;
 
-    // 이미지 미리보기 표시
     const reader = new FileReader();
     reader.onload = async (event) => {
         uploadPreview.src = event.target.result;
@@ -123,12 +120,35 @@ imageUpload.addEventListener('change', async (e) => {
         loadingMessage.style.display = 'none';
         
         await loadModel();
-        // 이미지가 로드된 후 예측 실행
         uploadPreview.onload = async () => {
             await predict(uploadPreview);
         };
     };
     reader.readAsDataURL(file);
+}
+
+// 이미지 업로드 버튼 클릭 시
+imageUpload.addEventListener('change', (e) => {
+    handleImageFile(e.target.files[0]);
+});
+
+// 드래그 앤 드롭 이벤트 처리
+imageContainer.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    imageContainer.classList.add('drag-over');
+    loadingMessage.textContent = "여기에 놓으세요!";
+});
+
+imageContainer.addEventListener('dragleave', () => {
+    imageContainer.classList.remove('drag-over');
+    loadingMessage.textContent = "여기에 사진을 끌어다 놓거나 아래 버튼을 누르세요!";
+});
+
+imageContainer.addEventListener('drop', (e) => {
+    e.preventDefault();
+    imageContainer.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    handleImageFile(file);
 });
 
 // 판별 실행
