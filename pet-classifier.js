@@ -6,25 +6,12 @@ let isWebcamRunning = false;
 
 const startBtn = document.getElementById('start-btn');
 const stopCameraBtn = document.getElementById('stop-camera-btn');
-const themeBtn = document.getElementById('theme-btn');
 const loadingMessage = document.getElementById('loading-message');
 const imageUpload = document.getElementById('image-upload');
 const uploadPreview = document.getElementById('upload-preview');
 const webcamContainer = document.getElementById('webcam-container');
 const imageContainer = document.getElementById('image-container');
-
-// 테마 변경 로직
-if (localStorage.getItem('theme') === 'dark') {
-    document.body.classList.add('dark-mode');
-    themeBtn.textContent = '라이트 모드 켜기';
-}
-
-themeBtn.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    const isDark = document.body.classList.contains('dark-mode');
-    themeBtn.textContent = isDark ? '라이트 모드 켜기' : '다크 모드 켜기';
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-});
+const analysisStatus = document.getElementById('analysis-status');
 
 // 모델 로드 함수
 async function loadModel() {
@@ -75,12 +62,15 @@ async function startWebcam() {
         
         startBtn.style.display = 'none';
         document.querySelector('.upload-wrapper').style.display = 'none';
-        stopCameraBtn.style.display = 'inline-block';
+        stopCameraBtn.style.display = 'block';
+        
+        analysisStatus.style.display = 'inline-block';
+        analysisStatus.textContent = "실시간 분석 중...";
         
         window.requestAnimationFrame(loop);
     } catch (e) {
         console.error(e);
-        loadingMessage.textContent = "카메라를 켤 수 없습니다. 권한을 확인해주세요.";
+        loadingMessage.textContent = "카메라를 켤 수 없습니다.";
     }
 }
 
@@ -94,11 +84,12 @@ function stopWebcam() {
         imageContainer.style.display = 'flex';
         uploadPreview.style.display = 'none';
         loadingMessage.style.display = 'block';
-        loadingMessage.textContent = "여기에 사진을 끌어다 놓거나 아래 버튼을 누르세요!";
+        loadingMessage.textContent = "사진을 여기로 끌어다 놓으세요";
         
-        startBtn.style.display = 'inline-block';
-        document.querySelector('.upload-wrapper').style.display = 'inline-block';
+        startBtn.style.display = 'block';
+        document.querySelector('.upload-wrapper').style.display = 'block';
         stopCameraBtn.style.display = 'none';
+        analysisStatus.style.display = 'none';
     }
 }
 
@@ -109,7 +100,7 @@ async function loop() {
     window.requestAnimationFrame(loop);
 }
 
-// 이미지 파일 처리 로직 (재사용 가능)
+// 이미지 파일 처리
 async function handleImageFile(file) {
     if (!file || !file.type.startsWith('image/')) return;
 
@@ -119,36 +110,40 @@ async function handleImageFile(file) {
         uploadPreview.style.display = 'block';
         loadingMessage.style.display = 'none';
         
+        // 분석 상태 표시
+        analysisStatus.style.display = 'inline-block';
+        analysisStatus.textContent = "이미지를 분석하고 있습니다...";
+        
         await loadModel();
         uploadPreview.onload = async () => {
             await predict(uploadPreview);
+            analysisStatus.textContent = "분석 완료!";
+            // 3초 후 완료 메시지 숨기기
+            setTimeout(() => {
+                if (!isWebcamRunning) analysisStatus.style.display = 'none';
+            }, 3000);
         };
     };
     reader.readAsDataURL(file);
 }
 
-// 이미지 업로드 버튼 클릭 시
 imageUpload.addEventListener('change', (e) => {
     handleImageFile(e.target.files[0]);
 });
 
-// 드래그 앤 드롭 이벤트 처리
 imageContainer.addEventListener('dragover', (e) => {
     e.preventDefault();
     imageContainer.classList.add('drag-over');
-    loadingMessage.textContent = "여기에 놓으세요!";
 });
 
 imageContainer.addEventListener('dragleave', () => {
     imageContainer.classList.remove('drag-over');
-    loadingMessage.textContent = "여기에 사진을 끌어다 놓거나 아래 버튼을 누르세요!";
 });
 
 imageContainer.addEventListener('drop', (e) => {
     e.preventDefault();
     imageContainer.classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    handleImageFile(file);
+    handleImageFile(e.dataTransfer.files[0]);
 });
 
 // 판별 실행
@@ -159,7 +154,7 @@ async function predict(imageElement) {
         const probability = prediction[i].probability.toFixed(2);
         
         const container = labelContainer.childNodes[i];
-        container.querySelector('.label-name').textContent = classPrediction === "Dog" ? "강아지" : (classPrediction === "Cat" ? "고양이" : classPrediction);
+        container.querySelector('.label-name').textContent = classPrediction === "Dog" ? "강아지" : (classPrediction === "Cat" ? "고양이" : "기타");
         container.querySelector('.label-prob').textContent = Math.round(probability * 100) + "%";
         container.querySelector('.progress-fill').style.width = (probability * 100) + "%";
         
