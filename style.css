@@ -70,8 +70,12 @@ header {
     font-size: 0.85rem;
     font-weight: 500;
     cursor: pointer;
+    text-decoration: none;
     transition: var(--transition);
     color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .control-btn:hover {
@@ -241,7 +245,6 @@ footer {
     color: #bbb;
 }
 
-/* Animations */
 @keyframes popIn {
     0% { transform: scale(0.8); opacity: 0; }
     100% { transform: scale(1); opacity: 1; }

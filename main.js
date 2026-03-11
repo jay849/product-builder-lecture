@@ -109,7 +109,6 @@ const menuDesc = document.getElementById('menu-desc');
 const themeBtn = document.getElementById('theme-btn');
 const langBtn = document.getElementById('lang-btn');
 
-// Translation Dictionary
 const i18n = {
     ko: {
         title: "🍴 오늘 뭐 먹지?",
@@ -161,16 +160,13 @@ function updateLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('lang', lang);
     
-    // Main Content
     document.getElementById('main-title').textContent = i18n[lang].title;
     document.getElementById('main-subtitle').textContent = i18n[lang].subtitle;
     
-    // Controls
     langBtn.textContent = i18n[lang].lang;
     const isDark = document.body.classList.contains('dark-mode');
     themeBtn.textContent = isDark ? i18n[lang].themeLight : i18n[lang].themeDark;
     
-    // Result Card
     if (!isRolling) {
         if (lastSelectedMenu) {
             menuName.textContent = lastSelectedMenu[lang].name;
@@ -181,14 +177,12 @@ function updateLanguage(lang) {
         }
     }
     
-    // Button
     if (!isRolling) {
         recommendBtn.textContent = lastSelectedMenu ? i18n[lang].again : i18n[lang].button;
     } else {
         recommendBtn.textContent = i18n[lang].rolling;
     }
 
-    // Contact Form
     document.getElementById('contact-title').textContent = i18n[lang].contactTitle;
     document.getElementById('label-email').textContent = i18n[lang].labelEmail;
     document.getElementById('email').placeholder = i18n[lang].placeholderEmail;
@@ -196,7 +190,6 @@ function updateLanguage(lang) {
     document.getElementById('message').placeholder = i18n[lang].placeholderMessage;
     document.getElementById('contact-submit').textContent = i18n[lang].contactSubmit;
 
-    // Footer
     document.getElementById('footer-text').innerHTML = i18n[lang].footer;
 }
 
@@ -204,7 +197,6 @@ langBtn.addEventListener('click', () => {
     updateLanguage(currentLang === 'ko' ? 'en' : 'ko');
 });
 
-// Theme toggle logic
 const currentTheme = localStorage.getItem('theme');
 if (currentTheme === 'dark') {
     document.body.classList.add('dark-mode');
@@ -212,7 +204,6 @@ if (currentTheme === 'dark') {
 
 themeBtn.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
-    
     let theme = 'light';
     if (document.body.classList.contains('dark-mode')) {
         theme = 'dark';
@@ -221,7 +212,6 @@ themeBtn.addEventListener('click', () => {
     updateLanguage(currentLang); 
 });
 
-// Initial load
 updateLanguage(currentLang);
 
 recommendBtn.addEventListener('click', () => {
@@ -256,10 +246,8 @@ function finishSelection() {
     menuName.textContent = lastSelectedMenu[currentLang].name;
     menuDesc.textContent = lastSelectedMenu[currentLang].desc;
 
-    // Animation effects
     resultContainer.classList.add('active', 'pop-animation');
     
-    // Reset after some time
     setTimeout(() => {
         resultContainer.classList.remove('pop-animation');
     }, 400);

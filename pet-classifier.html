@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강아지 vs 고양이 판별기</title>
+    <link rel="stylesheet" href="pet-classifier.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Teachable Machine Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+</head>
+<body>
+    <div class="top-controls">
+        <a href="index.html" class="control-btn">🏠 홈으로</a>
+        <button id="theme-btn" class="control-btn">다크 모드</button>
+    </div>
+
+    <div class="app-container">
+        <header>
+            <h1>🐶 강아지 vs 고양이 🐱</h1>
+            <p>인공지능이 강아지인지 고양이인지 알려드려요!</p>
+        </header>
+
+        <main>
+            <div id="webcam-container" class="media-container">
+                <div id="loading-message">모델을 불러오는 중...</div>
+            </div>
+            
+            <div id="label-container">
+                <!-- Predictions will appear here -->
+            </div>
+
+            <div class="button-group">
+                <button id="start-btn" class="main-btn">카메라 시작하기</button>
+            </div>
+        </main>
+
+        <section class="info-section">
+            <h3>사용 방법</h3>
+            <ul>
+                <li>'카메라 시작하기' 버튼을 눌러 카메라를 켭니다.</li>
+                <li>강아지나 고양이를 카메라에 비춰보세요.</li>
+                <li>인공지능이 실시간으로 판별해 결과를 보여줍니다!</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 AI Pet Classifier</p>
+        </footer>
+    </div>
+
+    <script src="pet-classifier.js"></script>
+</body>
+</html>
