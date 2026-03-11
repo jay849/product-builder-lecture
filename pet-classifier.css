@@ -6,10 +6,12 @@
     border-radius: 30px;
     font-size: 0.9rem;
     font-weight: 700;
-    margin-bottom: 1.5rem;
-    display: inline-block;
+    margin: 0 auto 1.5rem;
+    display: block;
+    width: fit-content;
     box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
     animation: statusPulse 1.2s infinite;
+    text-align: center;
 }
 
 @keyframes statusPulse {

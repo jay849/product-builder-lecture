@@ -73,7 +73,7 @@ async function startWebcam() {
         stopCameraBtn.style.display = 'block';
         
         // 상태 표시
-        analysisStatus.style.display = 'inline-block';
+        analysisStatus.style.display = 'block';
         analysisStatus.textContent = "⚡ 실시간으로 분석하고 있습니다...";
         
         window.requestAnimationFrame(loop);
@@ -109,35 +109,49 @@ async function loop() {
     window.requestAnimationFrame(loop);
 }
 
-// 이미지 파일 처리 로직 (분석 중 메시지 강화)
+// 이미지 파일 처리 로직 (분석 중 메시지 강화 및 안정화)
 async function handleImageFile(file) {
     if (!file || !file.type.startsWith('image/')) return;
 
-    // 1. 분석 중 메시지 먼저 표시
-    analysisStatus.style.display = 'inline-block';
+    // 1. 상태 표시 초기화
+    analysisStatus.style.display = 'block';
     analysisStatus.textContent = "🔍 AI가 이미지를 분석하고 있습니다...";
     
-    const reader = new FileReader();
-    reader.onload = async (event) => {
-        uploadPreview.src = event.target.result;
-        uploadPreview.style.display = 'block';
-        loadingMessage.style.display = 'none';
-        
+    try {
+        // 2. 모델 먼저 로드 (이미 로드되어 있으면 즉시 통과)
         await loadModel();
         
-        // 이미지가 실제로 렌더링된 후 분석 시작
-        uploadPreview.onload = async () => {
-            await predict(uploadPreview);
-            analysisStatus.textContent = "✅ 분석 완료!";
-            // 잠시 후 '분석 완료' 메시지 숨김 (선택 사항)
-            setTimeout(() => {
-                if (!isWebcamRunning) {
-                    analysisStatus.style.display = 'none';
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            // 3. onload 핸들러를 src 설정 전에 미리 등록 (중요: 그래야 누락되지 않음)
+            uploadPreview.onload = async () => {
+                try {
+                    await predict(uploadPreview);
+                    analysisStatus.textContent = "✅ 분석 완료!";
+                    
+                    // 잠시 후 '분석 완료' 메시지 숨김
+                    setTimeout(() => {
+                        if (!isWebcamRunning) {
+                            analysisStatus.style.display = 'none';
+                        }
+                    }, 3000);
+                } catch (predictError) {
+                    console.error("Prediction error:", predictError);
+                    analysisStatus.textContent = "❌ 분석 중 오류가 발생했습니다.";
                 }
-            }, 3000);
+            };
+            
+            // 4. 이미지 소스 설정 및 화면 표시
+            uploadPreview.src = event.target.result;
+            uploadPreview.style.display = 'block';
+            loadingMessage.style.display = 'none';
         };
-    };
-    reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
+        
+    } catch (error) {
+        console.error("Handle image error:", error);
+        analysisStatus.textContent = "❌ 이미지를 처리할 수 없습니다.";
+    }
 }
 
 imageUpload.addEventListener('change', (e) => {
@@ -147,7 +161,7 @@ imageUpload.addEventListener('change', (e) => {
 imageContainer.addEventListener('dragover', (e) => {
     e.preventDefault();
     imageContainer.classList.add('drag-over');
-    analysisStatus.style.display = 'inline-block';
+    analysisStatus.style.display = 'block';
     analysisStatus.textContent = "여기에 사진을 놓으세요!";
 });
 
