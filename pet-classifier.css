@@ -5,58 +5,10 @@
     margin-bottom: 1.5rem;
 }
 
-/* 분석 상태 메시지 스타일 */
-.status-badge {
-    background-color: var(--secondary-color);
-    color: white;
-    padding: 0.5rem 1.2rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    margin-bottom: 1.2rem;
-    display: inline-block;
-    animation: statusPulse 1.5s infinite;
-    text-align: center;
-}
-
-@keyframes statusPulse {
-    0% { opacity: 0.7; transform: scale(0.98); }
-    50% { opacity: 1; transform: scale(1.02); }
-    100% { opacity: 0.7; transform: scale(0.98); }
-}
-
-.media-container {
-... User modified the `new_string` content to be: /* 판별기 전용: 심플 & 버튼 통일 */
-.media-section {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-}
-
-/* 분석 상태 메시지 스타일 */
-.status-badge {
-    background-color: var(--secondary-color);
-    color: white;
-    padding: 0.5rem 1.2rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    margin-bottom: 1.2rem;
-    display: inline-block;
-    animation: statusPulse 1.5s infinite;
-    text-align: center;
-}
-
-@keyframes statusPulse {
-    0% { opacity: 0.7; transform: scale(0.98); }
-    50% { opacity: 1; transform: scale(1.02); }
-    100% { opacity: 0.7; transform: scale(0.98); }
-}
-
 .media-container {
     width: 100%;
     max-width: 400px;
-    height: 350px;
+    height: 400px; /* 사용자님이 원하시는 400px로 복구 */
     background-color: var(--bg-color);
     border-radius: 12px;
     overflow: hidden;
@@ -78,6 +30,31 @@
     object-fit: cover;
 }
 
+#loading-message {
+    padding: 20px;
+    text-align: center;
+    line-height: 1.6;
+}
+
+/* 분석 상태 메시지 */
+.status-badge {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    display: inline-block;
+    animation: statusPulse 1.5s infinite;
+}
+
+@keyframes statusPulse {
+    0% { opacity: 0.7; transform: scale(0.98); }
+    50% { opacity: 1; transform: scale(1.02); }
+    100% { opacity: 0.7; transform: scale(0.98); }
+}
+
 /* 결과 라벨 디자인 */
 .result-labels {
     margin-bottom: 1.5rem;
@@ -95,41 +72,44 @@
     gap: 1rem;
 }
 
-.label-name { width: 60px; font-weight: 700; font-size: 0.9rem; }
+.label-name { width: 85px; font-weight: 700; font-size: 0.9rem; text-align: left; }
 .progress-bar { flex-grow: 1; height: 10px; background: #eee; border-radius: 5px; overflow: hidden; }
 .progress-fill { height: 100%; background: var(--primary-color); width: 0; transition: width 0.3s ease; }
 .label-prob { width: 45px; font-weight: 700; font-size: 0.9rem; text-align: right; }
 
-/* 버튼 그룹: 나란히 배치 및 크기 통일 */
+/* 버튼 그룹: 완벽한 대칭 및 크기 통일 */
 .button-group {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     justify-content: center;
 }
 
 .main-btn {
-    flex: 1; /* 가로 너비 동일하게 분할 */
-    height: 50px; /* 세로 높이 통일 */
+    flex: 1;
+    height: 55px; /* 높이 통일 */
     display: flex;
     align-items: center;
     justify-content: center;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     font-weight: 700;
     cursor: pointer;
-    font-size: 0.95rem;
+    font-size: 1rem;
     transition: var(--transition);
     white-space: nowrap;
 }
 
-.main-btn.primary { background: var(--primary-color); color: white; }
-.main-btn.secondary { background: #00b894; color: white; }
-.main-btn.danger { background: #ff7675; color: white; margin-top: 10px; width: 100%; }
+.upload-wrapper {
+    flex: 1;
+}
 
-.upload-wrapper { flex: 1; } /* 버튼과 똑같은 너비 유지 */
+.main-btn.primary { background: var(--primary-color); color: white; box-shadow: 0 4px 10px rgba(108, 92, 231, 0.2); }
+.main-btn.secondary { background: #00b894; color: white; box-shadow: 0 4px 10px rgba(0, 184, 148, 0.2); }
+.main-btn.danger { background: #ff7675; color: white; margin-top: 15px; width: 100%; }
+
+.main-btn:hover { opacity: 0.9; transform: translateY(-2px); }
 
 @media (max-width: 500px) {
-    .button-group { flex-direction: column; }
-    .main-btn { width: 100%; }
+    .button-group { flex-direction: column; gap: 10px; }
+    .media-container { height: 350px; }
 }
-.

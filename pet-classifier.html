@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>강아지/고양이 찾기 - Life Helper</title>
+    <title>🐶 강아지 vs 고양이 찾기 🐱 - Life Helper</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="pet-classifier.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,9 +22,9 @@
         <div class="nav-container">
             <a href="index.html" class="nav-logo">🌟 Life Helper</a>
             <div class="nav-links">
-                <a href="index.html">저녁 메뉴 추천</a>
+                <a href="index.html">메뉴 추천</a>
                 <a href="pet-classifier.html" class="active">강아지/고양이 찾기</a>
-                <a href="about.html">서비스 소개</a>
+                <a href="about.html">소개</a>
                 <button id="theme-btn" class="theme-toggle">🌙</button>
             </div>
         </div>
@@ -32,18 +32,18 @@
 
     <div class="container">
         <div class="section-card">
-            <h1>🐶 강아지 vs 고양이 찾기</h1>
-            <p class="subtitle">인공지능이 반려동물의 종류를 판별해 드립니다.</p>
+            <h1>🐶 강아지 vs 고양이 찾기 🐱</h1>
+            <p class="subtitle">사진을 업로드하거나 카메라로 분석해 보세요.</p>
 
             <div class="media-section">
                 <div id="webcam-container" class="media-container" style="display:none;"></div>
                 <div id="image-container" class="media-container">
                     <img id="upload-preview" src="" alt="미리보기" style="display:none;">
-                    <div id="loading-message">사진을 여기로 끌어다 놓으세요</div>
+                    <div id="loading-message">여기에 사진을 끌어다 놓거나<br>아래 버튼을 눌러 시작해 보세요!</div>
                 </div>
             </div>
             
-            <div id="analysis-status" class="status-badge" style="display:none;">AI가 분석하고 있습니다...</div>
+            <div id="analysis-status" class="status-badge" style="display:none;">분석 중...</div>
             <div id="label-container" class="result-labels">
                 <!-- 결과 표시 -->
             </div>
@@ -60,8 +60,8 @@
 
         <section class="section-card">
             <h3>🧠 AI 기술 안내</h3>
-            <p style="text-align: left; margin-bottom: 0;">
-                구글의 딥러닝 기술을 활용하여 반려동물의 특징을 분석합니다. 사진은 서버로 전송되지 않고 사용자의 기기 내에서만 처리되므로 안심하고 이용하세요.
+            <p style="text-align: left; margin-bottom: 0; color: var(--text-muted);">
+                구글의 인공지능 기술을 활용하여 반려동물을 판별합니다. 사진은 서버에 저장되지 않고 브라우저 내에서만 안전하게 처리됩니다.
             </p>
         </section>
     </div>
