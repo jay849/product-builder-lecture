@@ -1,31 +1,22 @@
-/* 판별기 전용 스타일 보강 */
-.tool-section {
-    background: var(--card-bg);
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: var(--shadow);
-    margin-bottom: 2rem;
-}
-
+/* 판별기 전용: 심플 & 버튼 통일 */
 .media-section {
     display: flex;
     justify-content: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .media-container {
     width: 100%;
     max-width: 400px;
-    height: 400px;
+    height: 350px;
     background-color: var(--bg-color);
-    border-radius: 15px;
+    border-radius: 12px;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 3px dashed var(--secondary-color);
+    border: 2px dashed var(--secondary-color);
     transition: var(--transition);
-    position: relative;
 }
 
 .media-container.drag-over {
@@ -33,59 +24,63 @@
     background-color: rgba(108, 92, 231, 0.05);
 }
 
+#upload-preview, #webcam-container canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 결과 라벨 디자인 */
 .result-labels {
-    margin-bottom: 2rem;
-    display: grid;
-    gap: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
 }
 
 .prediction-bar-container {
     background: var(--bg-color);
-    padding: 1rem;
-    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
-.prediction-bar-container.high-prob {
-    border: 2px solid var(--primary-color);
-    background: var(--card-bg);
-}
+.label-name { width: 60px; font-weight: 700; font-size: 0.9rem; }
+.progress-bar { flex-grow: 1; height: 10px; background: #eee; border-radius: 5px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--primary-color); width: 0; transition: width 0.3s ease; }
+.label-prob { width: 45px; font-weight: 700; font-size: 0.9rem; text-align: right; }
 
-.label-name { width: 80px; font-weight: 700; color: var(--primary-color); }
-.progress-bar { flex-grow: 1; height: 12px; background: #eee; border-radius: 6px; overflow: hidden; }
-.progress-fill { height: 100%; background: linear-gradient(90deg, var(--secondary-color), var(--primary-color)); transition: width 0.3s ease; }
-.label-prob { width: 50px; font-weight: 700; text-align: right; }
-
+/* 버튼 그룹: 나란히 배치 및 크기 통일 */
 .button-group {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
 }
 
 .main-btn {
-    padding: 1rem;
+    flex: 1; /* 가로 너비 동일하게 분할 */
+    height: 50px; /* 세로 높이 통일 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     font-weight: 700;
     cursor: pointer;
+    font-size: 0.95rem;
     transition: var(--transition);
-    text-align: center;
-    font-size: 1rem;
+    white-space: nowrap;
 }
 
 .main-btn.primary { background: var(--primary-color); color: white; }
 .main-btn.secondary { background: #00b894; color: white; }
-.main-btn.danger { background: #ff7675; color: white; grid-column: span 2; }
+.main-btn.danger { background: #ff7675; color: white; margin-top: 10px; width: 100%; }
 
-.main-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+.upload-wrapper { flex: 1; } /* 버튼과 똑같은 너비 유지 */
 
-.guide-list { padding-left: 1.5rem; }
-.guide-list li { margin-bottom: 0.8rem; font-size: 0.95rem; color: var(--text-muted); }
-
-@media (max-width: 600px) {
-    .media-container { height: 300px; }
-    .button-group { grid-template-columns: 1fr; }
-    .main-btn.danger { grid-column: span 1; }
+@media (max-width: 500px) {
+    .button-group { flex-direction: column; }
+    .main-btn { width: 100%; }
 }
