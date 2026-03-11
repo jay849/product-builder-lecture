@@ -14,41 +14,55 @@
 </head>
 <body>
     <div class="top-controls">
-        <a href="index.html" class="control-btn">🏠 홈으로</a>
-        <button id="theme-btn" class="control-btn">다크 모드</button>
+        <a href="index.html" class="control-btn">🏠 홈으로 돌아가기</a>
+        <button id="theme-btn" class="control-btn">다크 모드 켜기</button>
     </div>
 
     <div class="app-container">
         <header>
-            <h1>🐶 강아지 vs 고양이 🐱</h1>
-            <p>인공지능이 강아지인지 고양이인지 알려드려요!</p>
+            <h1>🐶 강아지 vs 고양이 판별기 🐱</h1>
+            <p>인공지능이 사진 속 동물이 강아지인지 고양이인지 분석해 드립니다!</p>
         </header>
 
         <main>
-            <div id="webcam-container" class="media-container">
-                <div id="loading-message">모델을 불러오는 중...</div>
+            <div class="media-section">
+                <!-- 카메라 영역 -->
+                <div id="webcam-container" class="media-container" style="display:none;">
+                    <!-- 실시간 카메라 화면이 여기에 나타납니다 -->
+                </div>
+                
+                <!-- 이미지 업로드 미리보기 영역 -->
+                <div id="image-container" class="media-container">
+                    <img id="upload-preview" src="" alt="이미지 미리보기" style="display:none;">
+                    <div id="loading-message">아래 버튼을 눌러 시작해 보세요!</div>
+                </div>
             </div>
             
             <div id="label-container">
-                <!-- Predictions will appear here -->
+                <!-- 판별 결과(확률)가 여기에 나타납니다 -->
             </div>
 
             <div class="button-group">
-                <button id="start-btn" class="main-btn">카메라 시작하기</button>
+                <button id="start-btn" class="main-btn">🎥 실시간 카메라로 판별하기</button>
+                <div class="upload-wrapper">
+                    <label for="image-upload" class="main-btn secondary">🖼️ 내 사진 업로드해서 판별하기</label>
+                    <input type="file" id="image-upload" accept="image/*" style="display:none;">
+                </div>
+                <button id="stop-camera-btn" class="main-btn danger" style="display:none;">카메라 끄고 멈추기</button>
             </div>
         </main>
 
         <section class="info-section">
-            <h3>사용 방법</h3>
+            <h3>사용 안내</h3>
             <ul>
-                <li>'카메라 시작하기' 버튼을 눌러 카메라를 켭니다.</li>
-                <li>강아지나 고양이를 카메라에 비춰보세요.</li>
-                <li>인공지능이 실시간으로 판별해 결과를 보여줍니다!</li>
+                <li><strong>실시간 판별:</strong> 카메라를 켜고 강아지나 고양이를 비춰보세요.</li>
+                <li><strong>사진 업로드:</strong> 저장되어 있는 반려동물 사진을 선택하면 바로 분석합니다.</li>
+                <li>인공지능 모델이 실시간으로 확률을 계산하여 결과를 보여줍니다.</li>
             </ul>
         </section>
 
         <footer>
-            <p>&copy; 2026 AI Pet Classifier</p>
+            <p>&copy; 2026 AI Pet Classifier - 제품 빌더 강의 실습</p>
         </footer>
     </div>
 
