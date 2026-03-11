@@ -1,14 +1,56 @@
-/* 판별기 전용: 심플 & 버튼 통일 */
-.media-section {
-    display: flex;
-    justify-content: center;
+/* 분석 상태 배지 디자인 강화 */
+.status-badge {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.6rem 1.5rem;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 700;
     margin-bottom: 1.5rem;
+    display: inline-block;
+    box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
+    animation: statusPulse 1.2s infinite;
 }
 
+@keyframes statusPulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* 결과 라벨 디자인 보강 (이모지 너비 고려) */
+.label-name { 
+    width: 100px; /* 이모지 포함 너비 확보 */
+    font-weight: 700; 
+    font-size: 0.95rem; 
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.prediction-bar-container {
+    background: var(--bg-color);
+    padding: 1rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: var(--transition);
+}
+
+.prediction-bar-container.high-prob {
+    background: var(--card-bg);
+    border: 2px solid var(--primary-color);
+    transform: translateX(5px);
+}
+
+/* 기존 버튼 및 영역 스타일 유지 */
+.media-section { display: flex; justify-content: center; margin-bottom: 1.5rem; }
 .media-container {
     width: 100%;
     max-width: 400px;
-    height: 400px; /* 사용자님이 원하시는 400px로 복구 */
+    height: 400px;
     background-color: var(--bg-color);
     border-radius: 12px;
     overflow: hidden;
@@ -18,75 +60,19 @@
     border: 2px dashed var(--secondary-color);
     transition: var(--transition);
 }
+.media-container.drag-over { border-style: solid; background-color: rgba(108, 92, 231, 0.05); }
+#upload-preview, #webcam-container canvas { width: 100%; height: 100%; object-fit: cover; }
+#loading-message { padding: 20px; text-align: center; line-height: 1.6; color: var(--text-muted); }
 
-.media-container.drag-over {
-    border-style: solid;
-    background-color: rgba(108, 92, 231, 0.05);
-}
-
-#upload-preview, #webcam-container canvas {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-#loading-message {
-    padding: 20px;
-    text-align: center;
-    line-height: 1.6;
-}
-
-/* 분석 상태 메시지 */
-.status-badge {
-    background-color: var(--secondary-color);
-    color: white;
-    padding: 0.5rem 1.2rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    margin-bottom: 1.2rem;
-    display: inline-block;
-    animation: statusPulse 1.5s infinite;
-}
-
-@keyframes statusPulse {
-    0% { opacity: 0.7; transform: scale(0.98); }
-    50% { opacity: 1; transform: scale(1.02); }
-    100% { opacity: 0.7; transform: scale(0.98); }
-}
-
-/* 결과 라벨 디자인 */
-.result-labels {
-    margin-bottom: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-}
-
-.prediction-bar-container {
-    background: var(--bg-color);
-    padding: 0.8rem 1rem;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.label-name { width: 85px; font-weight: 700; font-size: 0.9rem; text-align: left; }
-.progress-bar { flex-grow: 1; height: 10px; background: #eee; border-radius: 5px; overflow: hidden; }
+.result-labels { margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; }
+.progress-bar { flex-grow: 1; height: 12px; background: #eee; border-radius: 6px; overflow: hidden; }
 .progress-fill { height: 100%; background: var(--primary-color); width: 0; transition: width 0.3s ease; }
-.label-prob { width: 45px; font-weight: 700; font-size: 0.9rem; text-align: right; }
+.label-prob { width: 50px; font-weight: 700; font-size: 0.95rem; text-align: right; }
 
-/* 버튼 그룹: 완벽한 대칭 및 크기 통일 */
-.button-group {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-}
-
+.button-group { display: flex; gap: 15px; justify-content: center; }
 .main-btn {
     flex: 1;
-    height: 55px; /* 높이 통일 */
+    height: 55px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -96,18 +82,12 @@
     cursor: pointer;
     font-size: 1rem;
     transition: var(--transition);
-    white-space: nowrap;
 }
-
-.upload-wrapper {
-    flex: 1;
-}
-
-.main-btn.primary { background: var(--primary-color); color: white; box-shadow: 0 4px 10px rgba(108, 92, 231, 0.2); }
-.main-btn.secondary { background: #00b894; color: white; box-shadow: 0 4px 10px rgba(0, 184, 148, 0.2); }
+.main-btn.primary { background: var(--primary-color); color: white; }
+.main-btn.secondary { background: #00b894; color: white; }
 .main-btn.danger { background: #ff7675; color: white; margin-top: 15px; width: 100%; }
-
 .main-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+.upload-wrapper { flex: 1; }
 
 @media (max-width: 500px) {
     .button-group { flex-direction: column; gap: 10px; }
