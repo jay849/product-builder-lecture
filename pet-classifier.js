@@ -110,7 +110,6 @@ async function handleImageFile(file) {
         uploadPreview.style.display = 'block';
         loadingMessage.style.display = 'none';
         
-        // 분석 상태 표시
         analysisStatus.style.display = 'inline-block';
         analysisStatus.textContent = "이미지를 분석하고 있습니다...";
         
@@ -118,7 +117,6 @@ async function handleImageFile(file) {
         uploadPreview.onload = async () => {
             await predict(uploadPreview);
             analysisStatus.textContent = "분석 완료!";
-            // 3초 후 완료 메시지 숨기기
             setTimeout(() => {
                 if (!isWebcamRunning) analysisStatus.style.display = 'none';
             }, 3000);
@@ -154,7 +152,12 @@ async function predict(imageElement) {
         const probability = prediction[i].probability.toFixed(2);
         
         const container = labelContainer.childNodes[i];
-        container.querySelector('.label-name').textContent = classPrediction === "Dog" ? "강아지" : (classPrediction === "Cat" ? "고양이" : "기타");
+        // 이모지 및 한글 명칭 설정
+        let labelName = classPrediction;
+        if (classPrediction === "Dog") labelName = "🐶 강아지";
+        else if (classPrediction === "Cat") labelName = "🐱 고양이";
+        
+        container.querySelector('.label-name').textContent = labelName;
         container.querySelector('.label-prob').textContent = Math.round(probability * 100) + "%";
         container.querySelector('.progress-fill').style.width = (probability * 100) + "%";
         

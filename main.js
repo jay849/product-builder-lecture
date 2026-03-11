@@ -4,26 +4,27 @@ const themeBtn = document.getElementById('theme-btn');
 function updateThemeUI(isDark) {
     if (isDark) {
         document.body.classList.add('dark-mode');
-        themeBtn.textContent = '☀️'; // 다크모드일 때는 해 아이콘 (라이트모드로 전환용)
+        if (themeBtn) themeBtn.textContent = '☀️'; // 다크모드일 때: 해 아이콘 (라이트로 전환용)
     } else {
         document.body.classList.remove('dark-mode');
-        themeBtn.textContent = '🌙'; // 라이트모드일 때는 달 아이콘 (다크모드로 전환용)
+        if (themeBtn) themeBtn.textContent = '🌙'; // 라이트모드일 때: 달 아이콘 (다크로 전환용)
     }
 }
 
-// 초기 테마 로드
-const currentTheme = localStorage.getItem('theme') === 'dark';
-updateThemeUI(currentTheme);
+// 페이지 로드 시 테마 상태 확인
+const savedTheme = localStorage.getItem('theme');
+const initialIsDark = savedTheme === 'dark';
+updateThemeUI(initialIsDark);
 
 if (themeBtn) {
     themeBtn.addEventListener('click', () => {
-        const isDark = document.body.classList.toggle('dark-mode');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        updateThemeUI(isDark);
+        const isDarkNow = document.body.classList.toggle('dark-mode');
+        localStorage.setItem('theme', isDarkNow ? 'dark' : 'light');
+        updateThemeUI(isDarkNow);
     });
 }
 
-// 메뉴 추천 데이터 및 로직 (index.html 전용)
+// 메뉴 추천 로직 (index.html 전용)
 const dinnerMenus = [
     { ko: { name: "비빔밥", desc: "각종 나물과 고추장의 환상적인 조화!" }, icon: "🍱" },
     { ko: { name: "김치찌개", desc: "한국인의 소울푸드, 깊은 맛의 김치찌개" }, icon: "🥘" },
