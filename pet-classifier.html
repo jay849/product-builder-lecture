@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>강아지 vs 고양이 판별기</title>
+    <title>강아지 vs 고양이 AI 판별기 - 라이프 헬퍼</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="pet-classifier.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Google AdSense -->
     <meta name="google-adsense-account" content="ca-pub-1134948203088944">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1134948203088944"
@@ -17,58 +18,90 @@
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 </head>
 <body>
-    <div class="top-controls">
-        <a href="index.html" class="control-btn">🏠 홈으로 돌아가기</a>
-        <button id="theme-btn" class="control-btn">다크 모드 켜기</button>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">🌟 Life Helper</a>
+            <div class="nav-links">
+                <a href="index.html">저녁 메뉴 추천</a>
+                <a href="pet-classifier.html" class="active">강아지/고양이 판별</a>
+                <button id="theme-btn" class="theme-toggle">🌙</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section" style="background: linear-gradient(135deg, #6c5ce7, #00d2d3);">
+        <div class="hero-content">
+            <h1>🐶 강아지 vs 고양이 AI 판별기</h1>
+            <p>최첨단 딥러닝 모델이 사진 속 반려동물을 정확하게 분석합니다.</p>
+        </div>
     </div>
 
-    <div class="app-container">
-        <header>
-            <h1>🐶 강아지 vs 고양이 AI 판별기 🐱</h1>
-            <p>인공지능이 사진 속 동물이 강아지인지 고양이인지 분석해 드립니다!</p>
-        </header>
-
-        <main>
-            <div class="media-section">
-                <!-- 카메라 영역 -->
-                <div id="webcam-container" class="media-container" style="display:none;">
-                    <!-- 실시간 카메라 화면이 여기에 나타납니다 -->
+    <div class="container">
+        <main class="main-content">
+            <!-- 분석 도구 섹션 -->
+            <section class="tool-section">
+                <div class="media-section">
+                    <div id="webcam-container" class="media-container" style="display:none;"></div>
+                    <div id="image-container" class="media-container">
+                        <img id="upload-preview" src="" alt="이미지 미리보기" style="display:none;">
+                        <div id="loading-message">여기에 사진을 끌어다 놓거나<br>아래 버튼을 눌러 시작하세요!</div>
+                    </div>
                 </div>
                 
-                <!-- 이미지 업로드 미리보기 영역 -->
-                <div id="image-container" class="media-container">
-                    <img id="upload-preview" src="" alt="이미지 미리보기" style="display:none;">
-                    <div id="loading-message">여기에 사진을 끌어다 놓거나<br>아래 버튼을 눌러 시작해 보세요!</div>
+                <div id="label-container" class="result-labels">
+                    <!-- 판별 결과 영역 -->
                 </div>
-            </div>
-            
-            <div id="label-container">
-                <!-- 판별 결과(확률)가 여기에 나타납니다 -->
-            </div>
 
-            <div class="button-group">
-                <button id="start-btn" class="main-btn">🎥 실시간 카메라로 판별하기</button>
-                <div class="upload-wrapper">
-                    <label for="image-upload" class="main-btn secondary">🖼️ 내 사진 업로드해서 판별하기</label>
-                    <input type="file" id="image-upload" accept="image/*" style="display:none;">
+                <div class="button-group">
+                    <button id="start-btn" class="main-btn primary">🎥 실시간 카메라 분석</button>
+                    <div class="upload-wrapper">
+                        <label for="image-upload" class="main-btn secondary">🖼️ 이미지 파일 업로드</label>
+                        <input type="file" id="image-upload" accept="image/*" style="display:none;">
+                    </div>
+                    <button id="stop-camera-btn" class="main-btn danger" style="display:none;">카메라 중지</button>
                 </div>
-                <button id="stop-camera-btn" class="main-btn danger" style="display:none;">카메라 끄고 멈추기</button>
-            </div>
+            </section>
+
+            <!-- 정보성 콘텐츠 섹션 -->
+            <section class="info-articles">
+                <div class="article-card">
+                    <h3>🧠 이 AI는 어떻게 작동하나요?</h3>
+                    <p>본 서비스는 구글의 Teachable Machine과 TensorFlow.js 기술을 기반으로 합니다. 수천 장의 강아지와 고양이 이미지를 학습한 합성곱 신경망(CNN) 모델이 이미지의 특징점(귀 모양, 눈의 위치, 코의 형태 등)을 추출하여 확률을 계산합니다.</p>
+                </div>
+                <div class="article-card">
+                    <h3>🔍 정확도를 높이는 방법</h3>
+                    <p>밝은 조명 아래에서 동물의 얼굴이 정면으로 보이게 촬영된 사진을 사용해 보세요. 배경이 복잡하지 않을수록 AI의 판별 정확도가 높아집니다.</p>
+                </div>
+            </section>
         </main>
 
-        <section class="info-section">
-            <h3>사용 안내</h3>
-            <ul>
-                <li><strong>실시간 판별:</strong> 카메라를 켜고 강아지나 고양이를 비춰보세요.</li>
-                <li><strong>사진 업로드:</strong> 저장되어 있는 반려동물 사진을 선택하면 바로 분석합니다.</li>
-                <li>인공지능 모델이 실시간으로 확률을 계산하여 결과를 보여줍니다.</li>
-            </ul>
-        </section>
-
-        <footer>
-            <p>&copy; 2026 AI Pet Classifier - 제품 빌더 강의 실습 | <a href="privacy.html" style="color: #bdc3c7; text-decoration: none;">개인정보 처리방침</a></p>
-        </footer>
+        <aside class="sidebar">
+            <div class="sidebar-card">
+                <h3>📋 이용 안내</h3>
+                <ul class="guide-list">
+                    <li>모든 분석은 사용자 기기에서 실시간으로 이루어집니다.</li>
+                    <li>업로드한 이미지는 서버에 저장되지 않아 안심하고 이용하실 수 있습니다.</li>
+                    <li>결과는 확률(%)로 표시되며, 가장 높은 항목이 판별 결과입니다.</li>
+                </ul>
+            </div>
+            <div class="sidebar-card">
+                <h3>🍴 저녁 메뉴가 고민이라면?</h3>
+                <p>결정 장애 해결사! 오늘의 메뉴 추천 도구도 확인해 보세요.</p>
+                <a href="index.html" class="link-btn">메뉴 추천기 가기</a>
+            </div>
+        </aside>
     </div>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>&copy; 2026 Life Helper. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="index.html">홈</a>
+                <a href="pet-classifier.html">AI 판별기</a>
+                <a href="privacy.html">개인정보 처리방침</a>
+            </div>
+        </div>
+    </footer>
 
     <script src="pet-classifier.js"></script>
 </body>
