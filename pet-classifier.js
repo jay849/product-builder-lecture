@@ -13,26 +13,36 @@ const webcamContainer = document.getElementById('webcam-container');
 const imageContainer = document.getElementById('image-container');
 const analysisStatus = document.getElementById('analysis-status');
 
-// 모델 로드 함수 (성공/실패 여부를 명확히 알 수 있게 개선)
+// 모델 로드 함수 (페이지 로드 시 즉시 실행되도록 개선)
 async function loadModel() {
     if (!model) {
         try {
             console.log("Loading model...");
             const modelURL = URL + "model.json";
             const metadataURL = URL + "metadata.json";
+            
+            // 모델 로딩 시작 전 상태 표시
+            analysisStatus.style.display = 'block';
+            analysisStatus.textContent = "🧠 AI 모델을 불러오는 중입니다...";
+            
             model = await tmImage.load(modelURL, metadataURL);
             maxPredictions = model.getTotalClasses();
             createLabelElements();
+            
             console.log("Model loaded successfully.");
+            analysisStatus.style.display = 'none'; // 로드 완료 후 숨김
         } catch (error) {
             console.error("Model load failed:", error);
             analysisStatus.style.display = 'block';
-            analysisStatus.textContent = "모델을 불러오지 못했습니다. 인터넷 연결을 확인하세요.";
+            analysisStatus.textContent = "❌ 모델 로딩 실패. 인터넷 연결을 확인하세요.";
         }
     }
 }
 
-// 결과 라벨 생성 (이모지 포함될 수 있는 구조로 준비)
+// 초기 로드 시 모델 미리 불러오기
+window.addEventListener('DOMContentLoaded', loadModel);
+
+// 결과 라벨 생성
 function createLabelElements() {
     labelContainer = document.getElementById("label-container");
     labelContainer.innerHTML = ""; 
@@ -109,49 +119,43 @@ async function loop() {
     window.requestAnimationFrame(loop);
 }
 
-// 이미지 파일 처리 로직 (분석 중 메시지 강화 및 안정화)
+// 이미지 파일 처리 로직 (분석 안정성 극대화)
 async function handleImageFile(file) {
     if (!file || !file.type.startsWith('image/')) return;
 
-    // 1. 상태 표시 초기화
+    // 1. 상태 표시
     analysisStatus.style.display = 'block';
     analysisStatus.textContent = "🔍 AI가 이미지를 분석하고 있습니다...";
     
-    try {
-        // 2. 모델 먼저 로드 (이미 로드되어 있으면 즉시 통과)
-        await loadModel();
-        
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            // 3. onload 핸들러를 src 설정 전에 미리 등록 (중요: 그래야 누락되지 않음)
-            uploadPreview.onload = async () => {
-                try {
-                    await predict(uploadPreview);
-                    analysisStatus.textContent = "✅ 분석 완료!";
-                    
-                    // 잠시 후 '분석 완료' 메시지 숨김
-                    setTimeout(() => {
-                        if (!isWebcamRunning) {
-                            analysisStatus.style.display = 'none';
-                        }
-                    }, 3000);
-                } catch (predictError) {
-                    console.error("Prediction error:", predictError);
-                    analysisStatus.textContent = "❌ 분석 중 오류가 발생했습니다.";
-                }
-            };
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        // 미리보기 설정
+        uploadPreview.src = event.target.result;
+        uploadPreview.style.display = 'block';
+        loadingMessage.style.display = 'none';
+
+        // 2. 이미지가 화면에 렌더링된 후 분석 시작 (안정적인 분석을 위해 약간의 지연)
+        uploadPreview.onload = async () => {
+            if (!model) {
+                await loadModel();
+            }
             
-            // 4. 이미지 소스 설정 및 화면 표시
-            uploadPreview.src = event.target.result;
-            uploadPreview.style.display = 'block';
-            loadingMessage.style.display = 'none';
+            try {
+                await predict(uploadPreview);
+                analysisStatus.textContent = "✅ 분석 완료!";
+                
+                setTimeout(() => {
+                    if (!isWebcamRunning) {
+                        analysisStatus.style.display = 'none';
+                    }
+                }, 3000);
+            } catch (err) {
+                console.error("Prediction error:", err);
+                analysisStatus.textContent = "❌ 분석 중 오류가 발생했습니다.";
+            }
         };
-        reader.readAsDataURL(file);
-        
-    } catch (error) {
-        console.error("Handle image error:", error);
-        analysisStatus.textContent = "❌ 이미지를 처리할 수 없습니다.";
-    }
+    };
+    reader.readAsDataURL(file);
 }
 
 imageUpload.addEventListener('change', (e) => {
@@ -176,7 +180,7 @@ imageContainer.addEventListener('drop', (e) => {
     handleImageFile(e.dataTransfer.files[0]);
 });
 
-// 판별 실행 (강아지/고양이 한글화 및 이모지 완벽 적용)
+// 판별 실행 (안전한 결과 처리)
 async function predict(imageElement) {
     if (!model) return;
     
@@ -188,7 +192,6 @@ async function predict(imageElement) {
         const container = labelContainer.childNodes[i];
         if (!container) continue;
 
-        // 클래스명에 따른 이모지 및 한글화 (대소문자 무관하게 처리)
         let labelName = classPrediction;
         const lowerName = classPrediction.toLowerCase();
         
